@@ -21,11 +21,18 @@ RUN yum makecache fast \
       ansible \
       sudo \
       which \
+      python-pip \
  && yum clean all
 
 # Disable requiretty.
 RUN sed -i -e 's/^\(Defaults\s*requiretty\)/#--- \1/'  /etc/sudoers
 
+# Upgrade python-pip
+RUN pip install --upgrade pip
+
+# Install ansible-lint and testinfra
+RUN pip install ansible-lint testinfra
+ 
 # Install Ansible inventory file.
 RUN echo -e '[local]\nlocalhost ansible_connection=local' > /etc/ansible/hosts
 
